@@ -6,6 +6,7 @@ import br.ufc.poo.repository.UsuarioRepository;
 import br.ufc.poo.model.Aluno;
 import br.ufc.poo.model.Professor;
 import br.ufc.poo.model.Coordenador;
+import br.ufc.poo.model.Usuario;
 
 public class MenuPrincipal {
 
@@ -13,6 +14,24 @@ public class MenuPrincipal {
 
     public MenuPrincipal(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
+    }
+
+    private void login() {
+        String email = JOptionPane.showInputDialog("Email:");
+        String senha = JOptionPane.showInputDialog("Senha:");
+
+        Usuario usuario = usuarioRepository.buscarPorEmail(email);
+
+        if (usuario == null) {
+            JOptionPane.showMessageDialog(null, "Usuário não encontrado");
+            return;
+        }
+
+        if (!usuario.getSenha().equals(senha)) {
+            JOptionPane.showMessageDialog(null, "Senha incorreta");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
     }
 
     private void cadastrarAluno() {
@@ -67,7 +86,7 @@ public class MenuPrincipal {
             switch (opcao) {
 
                 case 1:
-                    JOptionPane.showMessageDialog(null,"Funcionalidade não implementada");
+                    login();
                     break;
 
                 case 2:
