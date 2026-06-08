@@ -32,13 +32,21 @@ public class MenuPrincipal {
             return;
         }
         JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
+
+        if (usuario instanceof Aluno) {
+            new MenuAluno().exibirMenu();
+        } else if (usuario instanceof Professor) {
+            new MenuProfessor().exibirMenu();
+        } else if (usuario instanceof Coordenador) {
+            new MenuCoordenador().exibirMenu();
+        }
     }
 
     private void cadastrarAluno() {
         String nome = JOptionPane.showInputDialog("Nome:");
         String email = JOptionPane.showInputDialog("Email:");
         String senha = JOptionPane.showInputDialog("Senha:");
-        int matricula = Integer.parseInt(JOptionPane.showInputDialog("Matricula"));
+        int matricula = Integer.parseInt(JOptionPane.showInputDialog("Matrícula"));
 
         Aluno aluno = new Aluno(nome, email, senha, matricula);
         usuarioRepository.adicionarUsuario(aluno);
