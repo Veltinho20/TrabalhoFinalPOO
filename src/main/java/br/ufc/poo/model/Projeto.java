@@ -79,7 +79,7 @@ public class Projeto {
     }
 
     public String exibirInfo() {
-        return "===== DADOS DO PROJETO =====" +
+        return "DADOS DO PROJETO" +
                 "\n\nTítulo: " + titulo +
                 "\nÁrea de estudo: " + areaEstudo +
                 "\nOrientador: " + orientador.getNome() +

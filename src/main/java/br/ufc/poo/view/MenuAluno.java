@@ -2,8 +2,24 @@ package br.ufc.poo.view;
 
 import javax.swing.JOptionPane;
 
+import br.ufc.poo.model.Projeto;
+import br.ufc.poo.repository.ProjetoRepository;
+
 public class MenuAluno {
 
+    private ProjetoRepository projetoRepository;
+
+    public MenuAluno(ProjetoRepository projetoRepository) {
+        this.projetoRepository = projetoRepository;
+    }
+
+    public void visualizarProjetos() {
+        String mensagem = "";
+        for (Projeto p : projetoRepository.listarProjetos()) {
+            mensagem += p.exibirInfo() + "\n\n";
+        }
+        JOptionPane.showMessageDialog(null, mensagem);
+    }
     public void exibirMenu() {
 
         int opcao;
@@ -19,7 +35,7 @@ public class MenuAluno {
 
             switch (opcao) {
                 case 1:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    visualizarProjetos();
                     break;
 
                 case 2:

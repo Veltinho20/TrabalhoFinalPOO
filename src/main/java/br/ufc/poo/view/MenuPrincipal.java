@@ -7,13 +7,16 @@ import br.ufc.poo.model.Aluno;
 import br.ufc.poo.model.Professor;
 import br.ufc.poo.model.Coordenador;
 import br.ufc.poo.model.Usuario;
+import br.ufc.poo.repository.ProjetoRepository;
 
 public class MenuPrincipal {
 
     private UsuarioRepository usuarioRepository;
+    private ProjetoRepository projetoRepository;
 
-    public MenuPrincipal(UsuarioRepository usuarioRepository) {
+    public MenuPrincipal(UsuarioRepository usuarioRepository, ProjetoRepository projetoRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.projetoRepository = projetoRepository;
     }
 
     private void login() {
@@ -34,9 +37,9 @@ public class MenuPrincipal {
         JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
 
         if (usuario instanceof Aluno) {
-            new MenuAluno().exibirMenu();
+            new MenuAluno(projetoRepository).exibirMenu();
         } else if (usuario instanceof Professor) {
-            new MenuProfessor().exibirMenu();
+            new MenuProfessor((Professor) usuario, projetoRepository).exibirMenu();
         } else if (usuario instanceof Coordenador) {
             new MenuCoordenador().exibirMenu();
         }
