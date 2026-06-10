@@ -24,6 +24,7 @@ public class MenuAluno {
     public void visualizarProjetos() {
         if (projetoRepository.listarProjetos().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Não há projetos disponíveis");
+            return;
         }
 
         String mensagem = "";
@@ -37,6 +38,7 @@ public class MenuAluno {
     public void inscreverEmProjeto() {
         if (projetoRepository.listarProjetos().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Não há projetos disponíveis");
+            return;
         }
         String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
 
@@ -53,9 +55,26 @@ public class MenuAluno {
             return;
         }
         Participacao participacao = new Participacao(aluno, projetoEncontrado, StatusParticipacao.ATIVO);
+        participacaoRepository.adicionarParticipacao(participacao);
         JOptionPane.showMessageDialog(null, "Inscrição bem sucedida");
     }
 
+    public void historicoProjetos() {
+        String mensagem = "";
+
+        for (Participacao p : participacaoRepository.listarParticipacoes()) {
+            if (p.getAluno().equals(aluno)) {
+                mensagem += p.exibirInfo() + "\n\n";
+                return;
+            }
+
+            if (mensagem.isEmpty()) {
+                JOptionPane.showMessageDialog(null,"Você não possui participações em projetos");
+                return;
+            }
+            JOptionPane.showMessageDialog(null, mensagem);
+        }
+    }
     public void exibirMenu() {
 
         int opcao;
@@ -83,7 +102,7 @@ public class MenuAluno {
                     break;
 
                 case 4:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    historicoProjetos();
                     break;
 
                 case 5:
