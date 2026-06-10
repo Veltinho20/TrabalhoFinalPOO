@@ -54,7 +54,7 @@ public class MenuAluno {
             JOptionPane.showMessageDialog(null, "Projeto não encontrado");
             return;
         }
-        Participacao participacao = new Participacao(aluno, projetoEncontrado, StatusParticipacao.ATIVO);
+        Participacao participacao = new Participacao(aluno, projetoEncontrado, StatusParticipacao.ATIVA);
         participacaoRepository.adicionarParticipacao(participacao);
         JOptionPane.showMessageDialog(null, "Inscrição bem sucedida");
     }
@@ -65,16 +65,33 @@ public class MenuAluno {
         for (Participacao p : participacaoRepository.listarParticipacoes()) {
             if (p.getAluno().equals(aluno)) {
                 mensagem += p.exibirInfo() + "\n\n";
-                return;
-            }
 
-            if (mensagem.isEmpty()) {
-                JOptionPane.showMessageDialog(null,"Você não possui participações em projetos");
+            }
+        }
+        if (mensagem.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Você não possui participações em projetos");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, mensagem);
+    }
+
+    public void cancelarParticipacao() {
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+
+        for (Participacao p : participacaoRepository.listarParticipacoes()) {
+            if (p.getAluno().equals(aluno) && p.getProjeto().getTitulo().equalsIgnoreCase(titulo)) {
+                if (p.getStatus() == StatusParticipacao.CANCELADA) {
+                    JOptionPane.showMessageDialog(null, "Essa inscrição já está cancelada");
+                } else {
+                    p.setStatus(StatusParticipacao.CANCELADA);
+                    JOptionPane.showMessageDialog(null, "Inscrição cancelada");
+                }
                 return;
             }
-            JOptionPane.showMessageDialog(null, mensagem);
         }
+        JOptionPane.showMessageDialog(null, "Você não está inscrito nesse projeto");
     }
+
     public void exibirMenu() {
 
         int opcao;
@@ -98,7 +115,7 @@ public class MenuAluno {
                     break;
 
                 case 3:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    cancelarParticipacao();
                     break;
 
                 case 4:
@@ -114,8 +131,8 @@ public class MenuAluno {
                     break;
 
                 default:
-                        JOptionPane.showMessageDialog(null, "Opção inválida");
-                        break;
+                    JOptionPane.showMessageDialog(null, "Opção inválida");
+                    break;
             }
         } while (opcao != 0);
     }
