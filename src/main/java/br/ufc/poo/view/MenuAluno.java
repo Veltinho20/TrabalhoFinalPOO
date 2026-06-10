@@ -2,24 +2,60 @@ package br.ufc.poo.view;
 
 import javax.swing.JOptionPane;
 
+import br.ufc.poo.enums.StatusParticipacao;
+import br.ufc.poo.model.Participacao;
 import br.ufc.poo.model.Projeto;
 import br.ufc.poo.repository.ProjetoRepository;
+import br.ufc.poo.model.Aluno;
+import br.ufc.poo.repository.ParticipacaoRepository;
 
 public class MenuAluno {
 
     private ProjetoRepository projetoRepository;
+    private Aluno aluno;
+    private ParticipacaoRepository participacaoRepository;
 
-    public MenuAluno(ProjetoRepository projetoRepository) {
+    public MenuAluno(Aluno aluno, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository) {
         this.projetoRepository = projetoRepository;
+        this.aluno = aluno;
+        this.participacaoRepository = participacaoRepository;
     }
 
     public void visualizarProjetos() {
+        if (projetoRepository.listarProjetos().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há projetos disponíveis");
+        }
+
         String mensagem = "";
+
         for (Projeto p : projetoRepository.listarProjetos()) {
             mensagem += p.exibirInfo() + "\n\n";
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
+
+    public void inscreverEmProjeto() {
+        if (projetoRepository.listarProjetos().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há projetos disponíveis");
+        }
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+
+        Projeto projetoEncontrado = null;
+
+        for (Projeto p : projetoRepository.listarProjetos()) {
+            if (p.getTitulo().equalsIgnoreCase(titulo)) {
+                projetoEncontrado = p;
+                break;
+            }
+        }
+        if (projetoEncontrado == null) {
+            JOptionPane.showMessageDialog(null, "Projeto não encontrado");
+            return;
+        }
+        Participacao participacao = new Participacao(aluno, projetoEncontrado, StatusParticipacao.ATIVO);
+        JOptionPane.showMessageDialog(null, "Inscrição bem sucedida");
+    }
+
     public void exibirMenu() {
 
         int opcao;
@@ -39,7 +75,7 @@ public class MenuAluno {
                     break;
 
                 case 2:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    inscreverEmProjeto();
                     break;
 
                 case 3:
