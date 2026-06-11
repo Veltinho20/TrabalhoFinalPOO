@@ -1,19 +1,25 @@
 package br.ufc.poo.view;
 
 import javax.swing.JOptionPane;
+
+import br.ufc.poo.enums.StatusParticipacao;
+import br.ufc.poo.model.Participacao;
 import br.ufc.poo.model.Professor;
 import br.ufc.poo.model.Projeto;
 import br.ufc.poo.repository.ProjetoRepository;
 import br.ufc.poo.enums.StatusProjeto;
+import br.ufc.poo.repository.ParticipacaoRepository;
 
 public class MenuProfessor {
 
     private Professor professor;
     private ProjetoRepository projetoRepository;
+    private ParticipacaoRepository participacaoRepository;
 
-    public MenuProfessor(Professor professor, ProjetoRepository projetoRepository) {
+    public MenuProfessor(Professor professor, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository) {
         this.professor = professor;
         this.projetoRepository = projetoRepository;
+        this.participacaoRepository = participacaoRepository;
     }
 
     private void criarProjeto() {
@@ -27,6 +33,22 @@ public class MenuProfessor {
 
         projetoRepository.adicionarProjeto(projeto);
         JOptionPane.showMessageDialog(null, "Projeto criado com sucesso");
+    }
+
+    public void visualizarInscritos() {
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+        String mensagem = "";
+
+        for (Participacao p : participacaoRepository.listarParticipacoes()) {
+            if (p.getProjeto().getTitulo().equalsIgnoreCase(titulo) && p.getStatus() != StatusParticipacao.CANCELADA) {
+                mensagem += p.getAluno().getNome() + "\n";
+            }
+        }
+        if (mensagem.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há alunos inscritos nesse projeto");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Alunos inscritos:\n\n" + mensagem);
     }
 
     public void exibirMenu() {
@@ -52,7 +74,7 @@ public class MenuProfessor {
                     break;
 
                 case 3:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    visualizarInscritos();
                     break;
 
                 case 4:
