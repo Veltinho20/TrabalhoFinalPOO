@@ -51,6 +51,31 @@ public class MenuProfessor {
         JOptionPane.showMessageDialog(null, "Alunos inscritos:\n\n" + mensagem);
     }
 
+    public void editarProjeto() {
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+        Projeto projetoEncontrado = null;
+
+        for (Projeto p : projetoRepository.listarProjetos()) {
+            if (p.getTitulo().equalsIgnoreCase(titulo) && p.getOrientador().equals(professor)) {
+                projetoEncontrado = p;
+                break;
+            }
+        }
+        if (projetoEncontrado == null) {
+            JOptionPane.showMessageDialog(null, "Projeto não encontrado ou não pertence a você");
+            return;
+        }
+        String novaArea = JOptionPane.showInputDialog("Nova área do projeto:", projetoEncontrado.getAreaEstudo());
+        String novoPrazo = JOptionPane.showInputDialog("Novo prazo:", projetoEncontrado.getPrazo());
+        int novasVagas = Integer.parseInt(JOptionPane.showInputDialog("Nova quantidade de vagas:", projetoEncontrado.getVagas()));
+
+        projetoEncontrado.setAreaEstudo(novaArea);
+        projetoEncontrado.setPrazo(novoPrazo);
+        projetoEncontrado.setVagas(novasVagas);
+
+        JOptionPane.showMessageDialog(null, "Projeto editado com sucesso");
+    }
+
     public void exibirMenu() {
 
         int opcao;
@@ -70,7 +95,7 @@ public class MenuProfessor {
                     break;
 
                 case 2:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    editarProjeto();
                     break;
 
                 case 3:
