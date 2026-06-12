@@ -9,17 +9,21 @@ import br.ufc.poo.model.Projeto;
 import br.ufc.poo.repository.ProjetoRepository;
 import br.ufc.poo.enums.StatusProjeto;
 import br.ufc.poo.repository.ParticipacaoRepository;
+import br.ufc.poo.repository.NotificacaoRepository;
+import br.ufc.poo.model.Notificacao;
 
 public class MenuProfessor {
 
     private Professor professor;
     private ProjetoRepository projetoRepository;
     private ParticipacaoRepository participacaoRepository;
+    private NotificacaoRepository notificacaoRepository;
 
-    public MenuProfessor(Professor professor, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository) {
+    public MenuProfessor(Professor professor, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository, NotificacaoRepository notificacaoRepository) {
         this.professor = professor;
         this.projetoRepository = projetoRepository;
         this.participacaoRepository = participacaoRepository;
+        this.notificacaoRepository = notificacaoRepository;
     }
 
     private void criarProjeto() {
@@ -83,6 +87,9 @@ public class MenuProfessor {
 
         for (Participacao p : participacaoRepository.listarParticipacoes()) {
             if (p.getProjeto().getTitulo().equalsIgnoreCase(titulo) && p.getStatus() == StatusParticipacao.ATIVA) {
+                Notificacao notificacao = new Notificacao(p.getAluno(), mensagem);
+                notificacaoRepository.adicionarNotificacao(notificacao);
+
                 alunosNotificados += p.getAluno().getNome() + "\n";
             }
         }

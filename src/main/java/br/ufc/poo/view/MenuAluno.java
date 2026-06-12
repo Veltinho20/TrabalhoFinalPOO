@@ -3,22 +3,26 @@ package br.ufc.poo.view;
 import javax.swing.JOptionPane;
 
 import br.ufc.poo.enums.StatusParticipacao;
+import br.ufc.poo.model.Notificacao;
 import br.ufc.poo.model.Participacao;
 import br.ufc.poo.model.Projeto;
 import br.ufc.poo.repository.ProjetoRepository;
 import br.ufc.poo.model.Aluno;
 import br.ufc.poo.repository.ParticipacaoRepository;
+import br.ufc.poo.repository.NotificacaoRepository;
 
 public class MenuAluno {
 
     private ProjetoRepository projetoRepository;
     private Aluno aluno;
     private ParticipacaoRepository participacaoRepository;
+    private NotificacaoRepository notificacaoRepository;
 
-    public MenuAluno(Aluno aluno, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository) {
+    public MenuAluno(Aluno aluno, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository, NotificacaoRepository notificacaoRepository) {
         this.projetoRepository = projetoRepository;
         this.aluno = aluno;
         this.participacaoRepository = participacaoRepository;
+        this.notificacaoRepository = notificacaoRepository;
     }
 
     public void visualizarProjetos() {
@@ -92,6 +96,22 @@ public class MenuAluno {
         JOptionPane.showMessageDialog(null, "Você não está inscrito nesse projeto");
     }
 
+    public void notificacoes() {
+        String mensagem = "";
+
+        for (Notificacao n : notificacaoRepository.listarNotificacoes()) {
+            if (n.getDestinatario().equals(aluno)) {
+                mensagem += n.exibirInfo() + "\n\n";
+                n.setLida(true);
+            }
+        }
+        if (mensagem.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Você não possui notificações");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, mensagem);
+    }
+
     public void exibirMenu() {
 
         int opcao;
@@ -123,7 +143,7 @@ public class MenuAluno {
                     break;
 
                 case 5:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    notificacoes();
                     break;
 
                 case 0:

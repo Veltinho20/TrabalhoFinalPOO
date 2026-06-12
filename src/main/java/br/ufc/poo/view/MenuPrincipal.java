@@ -9,18 +9,21 @@ import br.ufc.poo.model.Coordenador;
 import br.ufc.poo.model.Usuario;
 import br.ufc.poo.repository.ProjetoRepository;
 import br.ufc.poo.repository.ParticipacaoRepository;
+import br.ufc.poo.repository.NotificacaoRepository;
 
 public class MenuPrincipal {
 
     private UsuarioRepository usuarioRepository;
     private ProjetoRepository projetoRepository;
     private ParticipacaoRepository participacaoRepository;
+    private NotificacaoRepository notificacaoRepository;
 
 
-    public MenuPrincipal(UsuarioRepository usuarioRepository, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository) {
+    public MenuPrincipal(UsuarioRepository usuarioRepository, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository, NotificacaoRepository notificacaoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.projetoRepository = projetoRepository;
         this.participacaoRepository = participacaoRepository;
+        this.notificacaoRepository = notificacaoRepository;
     }
 
     private void login() {
@@ -41,9 +44,9 @@ public class MenuPrincipal {
         JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
 
         if (usuario instanceof Aluno) {
-            new MenuAluno((Aluno) usuario, projetoRepository, participacaoRepository).exibirMenu();
+            new MenuAluno((Aluno) usuario, projetoRepository, participacaoRepository, notificacaoRepository).exibirMenu();
         } else if (usuario instanceof Professor) {
-            new MenuProfessor((Professor) usuario, projetoRepository, participacaoRepository).exibirMenu();
+            new MenuProfessor((Professor) usuario, projetoRepository, participacaoRepository, notificacaoRepository).exibirMenu();
         } else if (usuario instanceof Coordenador) {
             new MenuCoordenador(usuarioRepository, projetoRepository, participacaoRepository).exibirMenu();
         }
