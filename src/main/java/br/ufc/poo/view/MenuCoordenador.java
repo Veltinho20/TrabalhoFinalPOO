@@ -5,15 +5,19 @@ import br.ufc.poo.repository.UsuarioRepository;
 import br.ufc.poo.model.Usuario;
 import br.ufc.poo.repository.ProjetoRepository;
 import br.ufc.poo.model.Projeto;
+import br.ufc.poo.model.Participacao;
+import br.ufc.poo.repository.ParticipacaoRepository;
 
 public class MenuCoordenador {
 
     private UsuarioRepository usuarioRepository;
     private ProjetoRepository projetoRepository;
+    private ParticipacaoRepository participacaoRepository;
 
-    public MenuCoordenador(UsuarioRepository usuarioRepository, ProjetoRepository projetoRepository) {
+    public MenuCoordenador(UsuarioRepository usuarioRepository, ProjetoRepository projetoRepository, ParticipacaoRepository participacaoRepository) {
         this.usuarioRepository = usuarioRepository;
         this.projetoRepository = projetoRepository;
+        this.participacaoRepository = participacaoRepository;
     }
 
     public void exibirUsuarios() {
@@ -43,6 +47,16 @@ public class MenuCoordenador {
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
+
+    public void gerarRelatorio() {
+        String relatorio = "RELATÓRIO DO SISTEMA" +
+                "\n\nUsuários cadastrados: " + usuarioRepository.listarUsuarios().size() +
+                "\n\nProjetos cadastrados: " + projetoRepository.listarProjetos().size() +
+                "\n\nParticipações cadastradas: " + participacaoRepository.listarParticipacoes().size();
+
+        JOptionPane.showMessageDialog(null, relatorio);
+    }
+
     public void exibirMenu() {
 
         int opcao;
@@ -65,7 +79,7 @@ public class MenuCoordenador {
                     break;
 
                 case 3:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    gerarRelatorio();
                     break;
 
                 case 4:

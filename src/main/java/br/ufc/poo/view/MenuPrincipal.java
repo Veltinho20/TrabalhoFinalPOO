@@ -45,7 +45,7 @@ public class MenuPrincipal {
         } else if (usuario instanceof Professor) {
             new MenuProfessor((Professor) usuario, projetoRepository, participacaoRepository).exibirMenu();
         } else if (usuario instanceof Coordenador) {
-            new MenuCoordenador(usuarioRepository, projetoRepository).exibirMenu();
+            new MenuCoordenador(usuarioRepository, projetoRepository, participacaoRepository).exibirMenu();
         }
     }
 
