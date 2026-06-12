@@ -76,6 +76,25 @@ public class MenuProfessor {
         JOptionPane.showMessageDialog(null, "Projeto editado com sucesso");
     }
 
+    public void notificacao() {
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+        String mensagem = JOptionPane.showInputDialog("Digite a mensagem da notificação");
+        String alunosNotificados = "";
+
+        for (Participacao p : participacaoRepository.listarParticipacoes()) {
+            if (p.getProjeto().getTitulo().equalsIgnoreCase(titulo) && p.getStatus() == StatusParticipacao.ATIVA) {
+                alunosNotificados += p.getAluno().getNome() + "\n";
+            }
+        }
+        if (alunosNotificados.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não há alunos ativos nesse projeto");
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Notificação enviada: \n\n" +
+                mensagem + "\n\nAlunos notificados: \n\n" +
+                alunosNotificados);
+    }
+
     public void exibirMenu() {
 
         int opcao;
@@ -103,7 +122,7 @@ public class MenuProfessor {
                     break;
 
                 case 4:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    notificacao();
                     break;
 
                 case 0:
