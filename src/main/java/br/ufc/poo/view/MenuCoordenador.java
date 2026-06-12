@@ -1,12 +1,13 @@
 package br.ufc.poo.view;
 
 import javax.swing.JOptionPane;
+
+import br.ufc.poo.model.*;
 import br.ufc.poo.repository.UsuarioRepository;
-import br.ufc.poo.model.Usuario;
 import br.ufc.poo.repository.ProjetoRepository;
-import br.ufc.poo.model.Projeto;
-import br.ufc.poo.model.Participacao;
 import br.ufc.poo.repository.ParticipacaoRepository;
+import br.ufc.poo.enums.StatusParticipacao;
+import br.ufc.poo.enums.StatusProjeto;
 
 public class MenuCoordenador {
 
@@ -57,6 +58,41 @@ public class MenuCoordenador {
         JOptionPane.showMessageDialog(null, relatorio);
     }
 
+    public void estatisticas() {
+        int totalAlunos = 0;
+        int totalProfessores = 0;
+        int totalCoordenadores = 0;
+        int totalProjetosAbertos = 0;
+        int totalParticipacoesAtivas = 0;
+
+        for (Usuario u : usuarioRepository.listarUsuarios()) {
+            if (u instanceof Aluno) {
+                totalAlunos++;
+            } else if (u instanceof Professor) {
+                totalProfessores++;
+            } else if (u instanceof Coordenador) {
+                totalCoordenadores++;
+            }
+        }
+        for (Projeto p : projetoRepository.listarProjetos()) {
+            if (p.getStatus() == StatusProjeto.ABERTO) {
+                totalProjetosAbertos++;
+            }
+        }
+        for (Participacao p : participacaoRepository.listarParticipacoes()) {
+            if (p.getStatus() == StatusParticipacao.ATIVA) {
+                totalParticipacoesAtivas++;
+            }
+        }
+        String estatisticas = "ESTATÍSTICAS GERAIS" +
+                "\n\nAlunos: " + totalAlunos +
+                "\nProfessores: " + totalProfessores +
+                "\nCoordenadores: " + totalCoordenadores +
+                "\nProjetos abertos: " + totalProjetosAbertos +
+                "\nParticipações ativas: " + totalParticipacoesAtivas;
+
+        JOptionPane.showMessageDialog(null, estatisticas);
+    }
     public void exibirMenu() {
 
         int opcao;
@@ -83,7 +119,7 @@ public class MenuCoordenador {
                     break;
 
                 case 4:
-                    JOptionPane.showMessageDialog(null, "Funcionalidade não implementada");
+                    estatisticas();
                     break;
 
                 case 0:
