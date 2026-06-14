@@ -20,6 +20,7 @@ public class Professor extends Usuario {
     @Override
     public String exibirInfo() {
         return "Professor: " + getNome() +
-                "\nÁrea de atuação: " + areaAtuacao;
+                "\nÁrea de atuação: " + areaAtuacao +
+                "\nEmail: " + getEmail();
     }
 }

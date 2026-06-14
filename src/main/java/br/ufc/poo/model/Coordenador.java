@@ -20,6 +20,7 @@ public class Coordenador extends Usuario {
     @Override
     public String exibirInfo() {
         return "Coordenador: " + getNome() +
-                "\nCurso: " + curso;
+                "\nCurso: " + curso +
+                "\nEmail: " + getEmail();
     }
 }

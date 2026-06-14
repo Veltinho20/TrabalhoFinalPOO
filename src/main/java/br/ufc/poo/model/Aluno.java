@@ -20,6 +20,7 @@ public class Aluno extends Usuario{
     @Override
     public String exibirInfo() {
         return "Aluno: " + getNome() +
-                "\nMatrícula: " + matricula;
+                "\nMatrícula: " + matricula +
+                "\nEmail: " + getEmail();
     }
 }
