@@ -15,6 +15,10 @@ public class UsuarioRepository {
         usuarios.add(usuario);
     }
 
+    public void removerUsuario(Usuario usuario) {
+        usuarios.remove(usuario);
+    }
+
     public ArrayList<Usuario> listarUsuarios() {
         return usuarios;
     }

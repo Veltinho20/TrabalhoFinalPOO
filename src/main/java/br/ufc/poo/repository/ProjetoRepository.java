@@ -15,6 +15,10 @@ public class ProjetoRepository {
         projetos.add(projeto);
     }
 
+    public void removerProjeto(Projeto projeto) {
+        projetos.remove(projeto);
+    }
+
     public ArrayList<Projeto> listarProjetos() {
         return projetos;
     }
