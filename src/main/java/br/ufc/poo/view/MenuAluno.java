@@ -3,6 +3,7 @@ package br.ufc.poo.view;
 import javax.swing.JOptionPane;
 
 import br.ufc.poo.enums.StatusParticipacao;
+import br.ufc.poo.exception.*;
 import br.ufc.poo.model.Notificacao;
 import br.ufc.poo.model.Participacao;
 import br.ufc.poo.model.Projeto;
@@ -25,10 +26,9 @@ public class MenuAluno {
         this.notificacaoRepository = notificacaoRepository;
     }
 
-    public void visualizarProjetos() {
+    public void visualizarProjetos() throws SistemaSemProjetosCadastradosException {
         if (projetoRepository.listarProjetos().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há projetos disponíveis");
-            return;
+            throw new SistemaSemProjetosCadastradosException("Não há projetos cadastrados.");
         }
 
         String mensagem = "";
@@ -39,12 +39,12 @@ public class MenuAluno {
         JOptionPane.showMessageDialog(null, mensagem);
     }
 
-    public void inscreverEmProjeto() {
+    public void inscreverEmProjeto() throws SistemaSemProjetosCadastradosException, ProjetoInexistenteException, ProjetoSemVagasException {
         if (projetoRepository.listarProjetos().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há projetos disponíveis");
-            return;
+            throw new SistemaSemProjetosCadastradosException("Não há projetos cadastrados.");
         }
-        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto:");
 
         Projeto projetoEncontrado = null;
 
@@ -55,15 +55,19 @@ public class MenuAluno {
             }
         }
         if (projetoEncontrado == null) {
-            JOptionPane.showMessageDialog(null, "Projeto não encontrado");
-            return;
+            throw new ProjetoInexistenteException("Projeto não encontrado");
+        }
+
+        if (projetoEncontrado.getVagas() <= 0) {
+            throw new ProjetoSemVagasException("Projeto sem vagas disponíveis");
         }
         Participacao participacao = new Participacao(aluno, projetoEncontrado, StatusParticipacao.ATIVA);
         participacaoRepository.adicionarParticipacao(participacao);
+        projetoEncontrado.setVagas(projetoEncontrado.getVagas() - 1);
         JOptionPane.showMessageDialog(null, "Inscrição bem sucedida");
     }
 
-    public void historicoProjetos() {
+    public void historicoProjetos() throws AlunoSemParticipacoesException {
         String mensagem = "";
 
         for (Participacao p : participacaoRepository.listarParticipacoes()) {
@@ -73,21 +77,21 @@ public class MenuAluno {
             }
         }
         if (mensagem.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Você não possui participações em projetos");
-            return;
+            throw new AlunoSemParticipacoesException("Você ainda não possui participações em projetos");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
 
-    public void cancelarParticipacao() {
+    public void cancelarParticipacao() throws ParticipacaoJaCanceladaException {
         String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
 
         for (Participacao p : participacaoRepository.listarParticipacoes()) {
             if (p.getAluno().equals(aluno) && p.getProjeto().getTitulo().equalsIgnoreCase(titulo)) {
                 if (p.getStatus() == StatusParticipacao.CANCELADA) {
-                    JOptionPane.showMessageDialog(null, "Essa inscrição já está cancelada");
+                    throw new ParticipacaoJaCanceladaException("Essa inscrição já está cancelada.");
                 } else {
                     p.setStatus(StatusParticipacao.CANCELADA);
+                    p.getProjeto().setVagas(p.getProjeto().getVagas() + 1);
                     JOptionPane.showMessageDialog(null, "Inscrição cancelada");
                 }
                 return;
@@ -96,7 +100,7 @@ public class MenuAluno {
         JOptionPane.showMessageDialog(null, "Você não está inscrito nesse projeto");
     }
 
-    public void notificacoes() {
+    public void notificacoes() throws AlunoSemNotificacoesException {
         String mensagem = "";
 
         for (Notificacao n : notificacaoRepository.listarNotificacoes()) {
@@ -106,8 +110,7 @@ public class MenuAluno {
             }
         }
         if (mensagem.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Você não possui notificações");
-            return;
+            throw new AlunoSemNotificacoesException("Você não possui notificações");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
@@ -127,23 +130,47 @@ public class MenuAluno {
 
             switch (opcao) {
                 case 1:
-                    visualizarProjetos();
+                    try {
+                        visualizarProjetos();
+                    } catch (SistemaSemProjetosCadastradosException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 2:
-                    inscreverEmProjeto();
+                    try {
+                        inscreverEmProjeto();
+                    } catch (SistemaSemProjetosCadastradosException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    } catch (ProjetoInexistenteException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    } catch (ProjetoSemVagasException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 3:
-                    cancelarParticipacao();
+                    try {
+                        cancelarParticipacao();
+                    } catch (ParticipacaoJaCanceladaException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 4:
-                    historicoProjetos();
+                    try {
+                        historicoProjetos();
+                    } catch (AlunoSemParticipacoesException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 5:
-                    notificacoes();
+                    try {
+                        notificacoes();
+                    } catch (AlunoSemNotificacoesException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 0:

@@ -11,6 +11,9 @@ import br.ufc.poo.enums.StatusProjeto;
 import br.ufc.poo.repository.ParticipacaoRepository;
 import br.ufc.poo.repository.NotificacaoRepository;
 import br.ufc.poo.model.Notificacao;
+import br.ufc.poo.exception.ProjetoInexistenteException;
+import br.ufc.poo.exception.ProjetoSemInscricoesException;
+import br.ufc.poo.exception.ProjetoSemAlunosAtivosException;
 
 public class MenuProfessor {
 
@@ -39,7 +42,7 @@ public class MenuProfessor {
         JOptionPane.showMessageDialog(null, "Projeto criado com sucesso");
     }
 
-    public void visualizarInscritos() {
+    public void visualizarInscritos() throws ProjetoSemInscricoesException {
         String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
         String mensagem = "";
 
@@ -49,13 +52,12 @@ public class MenuProfessor {
             }
         }
         if (mensagem.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há alunos inscritos nesse projeto");
-            return;
+            throw new ProjetoSemInscricoesException("Não há alunos inscritos nesse projeto");
         }
         JOptionPane.showMessageDialog(null, "Alunos inscritos:\n\n" + mensagem);
     }
 
-    public void editarProjeto() {
+    public void editarProjeto() throws ProjetoInexistenteException {
         String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
         Projeto projetoEncontrado = null;
 
@@ -66,8 +68,7 @@ public class MenuProfessor {
             }
         }
         if (projetoEncontrado == null) {
-            JOptionPane.showMessageDialog(null, "Projeto não encontrado ou não pertence a você");
-            return;
+            throw new ProjetoInexistenteException("Projeto não encontrado ou não pertence à você");
         }
         String novaArea = JOptionPane.showInputDialog("Nova área do projeto:", projetoEncontrado.getAreaEstudo());
         String novoPrazo = JOptionPane.showInputDialog("Novo prazo:", projetoEncontrado.getPrazo());
@@ -80,7 +81,7 @@ public class MenuProfessor {
         JOptionPane.showMessageDialog(null, "Projeto editado com sucesso");
     }
 
-    public void notificacao() {
+    public void notificacao() throws ProjetoSemAlunosAtivosException {
         String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
         String mensagem = JOptionPane.showInputDialog("Digite a mensagem da notificação");
         String alunosNotificados = "";
@@ -94,8 +95,7 @@ public class MenuProfessor {
             }
         }
         if (alunosNotificados.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há alunos ativos nesse projeto");
-            return;
+            throw new ProjetoSemAlunosAtivosException("Não há alunos ativos nesse projeto.");
         }
         JOptionPane.showMessageDialog(null, "Notificação enviada: \n\n" +
                 mensagem + "\n\nAlunos notificados: \n\n" +
@@ -121,15 +121,27 @@ public class MenuProfessor {
                     break;
 
                 case 2:
-                    editarProjeto();
+                    try {
+                        editarProjeto();
+                    } catch (ProjetoInexistenteException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 3:
-                    visualizarInscritos();
+                    try {
+                        visualizarInscritos();
+                    } catch (ProjetoSemInscricoesException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 4:
-                    notificacao();
+                    try {
+                        notificacao();
+                    } catch (ProjetoSemAlunosAtivosException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 0:

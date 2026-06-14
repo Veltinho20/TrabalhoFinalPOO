@@ -8,6 +8,8 @@ import br.ufc.poo.repository.ProjetoRepository;
 import br.ufc.poo.repository.ParticipacaoRepository;
 import br.ufc.poo.enums.StatusParticipacao;
 import br.ufc.poo.enums.StatusProjeto;
+import br.ufc.poo.exception.SistemaSemUsuariosCadastradosException;
+import br.ufc.poo.exception.SistemaSemProjetosCadastradosException;
 
 public class MenuCoordenador {
 
@@ -21,7 +23,7 @@ public class MenuCoordenador {
         this.participacaoRepository = participacaoRepository;
     }
 
-    public void exibirUsuarios() {
+    public void exibirUsuarios() throws SistemaSemUsuariosCadastradosException {
         String mensagem = "";
 
         for (Usuario u : usuarioRepository.listarUsuarios()) {
@@ -29,13 +31,12 @@ public class MenuCoordenador {
         }
 
         if (mensagem.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há usuários cadastrados");
-            return;
+            throw new SistemaSemUsuariosCadastradosException("Não há usuários cadastrados no sistema.");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
 
-    public void exibirProjetos() {
+    public void exibirProjetos() throws SistemaSemProjetosCadastradosException {
         String mensagem = "";
 
         for (Projeto p : projetoRepository.listarProjetos()) {
@@ -43,8 +44,7 @@ public class MenuCoordenador {
         }
 
         if (mensagem.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não há projetos cadastrados");
-            return;
+            throw new SistemaSemProjetosCadastradosException("Não há projetos cadastrados no sistema");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
@@ -107,11 +107,19 @@ public class MenuCoordenador {
 
             switch (opcao) {
                 case 1:
-                    exibirProjetos();
+                    try {
+                        exibirProjetos();
+                    } catch (SistemaSemProjetosCadastradosException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 2:
-                    exibirUsuarios();
+                    try {
+                        exibirUsuarios();
+                    } catch (SistemaSemUsuariosCadastradosException e) {
+                        JOptionPane.showMessageDialog(null, e.getMessage());
+                    }
                     break;
 
                 case 3:

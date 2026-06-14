@@ -1,8 +1,9 @@
 package br.ufc.poo.model;
 
 import br.ufc.poo.enums.StatusProjeto;
+import br.ufc.poo.interfaces.Exibivel;
 
-public class Projeto {
+public class Projeto implements Exibivel {
 
     private String titulo;
     private String areaEstudo;

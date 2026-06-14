@@ -1,6 +1,7 @@
 package br.ufc.poo.model;
+import br.ufc.poo.interfaces.Exibivel;
 
-public abstract class Usuario {
+public abstract class Usuario implements Exibivel {
 
     private String nome;
     private String email;

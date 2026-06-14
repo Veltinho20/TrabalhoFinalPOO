@@ -1,8 +1,9 @@
 package br.ufc.poo.model;
 
 import br.ufc.poo.enums.StatusParticipacao;
+import br.ufc.poo.interfaces.Exibivel;
 
-public class Participacao {
+public class Participacao implements Exibivel {
 
     private Aluno aluno;
     private Projeto projeto;

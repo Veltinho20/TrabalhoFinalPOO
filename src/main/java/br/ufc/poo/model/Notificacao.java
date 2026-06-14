@@ -1,6 +1,8 @@
 package br.ufc.poo.model;
 
-public class Notificacao {
+import br.ufc.poo.interfaces.Exibivel;
+
+public class Notificacao implements Exibivel {
 
     private Usuario destinatario;
     private String mensagem;
