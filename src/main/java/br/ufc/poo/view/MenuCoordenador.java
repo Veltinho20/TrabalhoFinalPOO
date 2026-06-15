@@ -46,7 +46,7 @@ public class MenuCoordenador {
         }
 
         if (mensagem.isEmpty()) {
-            throw new SistemaSemProjetosCadastradosException("Não há projetos cadastrados no sistema");
+            throw new SistemaSemProjetosCadastradosException("Não há projetos cadastrados no sistema.");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
@@ -113,7 +113,7 @@ public class MenuCoordenador {
         }
 
         if (projetoRemover == null) {
-            throw new ProjetoInexistenteException("Projeto não encontrado");
+            throw new ProjetoInexistenteException("Projeto não encontrado.");
         }
 
         projetoRepository.removerProjeto(projetoRemover);
@@ -153,17 +153,17 @@ public class MenuCoordenador {
                     break;
 
                 default:
-                    JOptionPane.showMessageDialog(null, "Opção inválida!");
+                    JOptionPane.showMessageDialog(null, "Opção inválida.");
             }
         } while (opcao != 0);
     }
 
     public void removerUsuario() throws SistemaSemUsuariosCadastradosException, UsuarioNaoEncontradoException {
         if (usuarioRepository.listarUsuarios().isEmpty()) {
-            throw new SistemaSemUsuariosCadastradosException("Não há usuários cadastrados no sistema");
+            throw new SistemaSemUsuariosCadastradosException("Não há usuários cadastrados no sistema.");
         }
 
-        String email = JOptionPane.showInputDialog("Digite o email do usuário que deseja remover");
+        String email = JOptionPane.showInputDialog("Digite o email do usuário que deseja remover:");
 
         Usuario usuarioRemover = null;
 
@@ -179,7 +179,7 @@ public class MenuCoordenador {
         }
 
         usuarioRepository.removerUsuario(usuarioRemover);
-        JOptionPane.showMessageDialog(null, "Usuario removido com sucesso!");
+        JOptionPane.showMessageDialog(null, "Usuario removido com sucesso.");
     }
 
     public void gerenciarUsuarios() {
@@ -249,11 +249,11 @@ public class MenuCoordenador {
                     break;
 
                 case 0:
-                    JOptionPane.showMessageDialog(null, "Saindo do menu do coordenador");
+                    JOptionPane.showMessageDialog(null, "Saindo do menu do coordenador...");
                     break;
 
                 default:
-                    JOptionPane.showMessageDialog(null, "Opção inválida");
+                    JOptionPane.showMessageDialog(null, "Opção inválida.");
             }
         } while (opcao != 0);
     }

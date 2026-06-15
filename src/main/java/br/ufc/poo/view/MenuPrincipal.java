@@ -33,15 +33,15 @@ public class MenuPrincipal {
         Usuario usuario = usuarioRepository.buscarPorEmail(email);
 
         if (usuario == null) {
-            JOptionPane.showMessageDialog(null, "Usuário não encontrado");
+            JOptionPane.showMessageDialog(null, "Usuário não encontrado.");
             return;
         }
 
         if (!usuario.getSenha().equals(senha)) {
-            JOptionPane.showMessageDialog(null, "Senha incorreta");
+            JOptionPane.showMessageDialog(null, "Senha incorreta.");
             return;
         }
-        JOptionPane.showMessageDialog(null, "Login realizado com sucesso");
+        JOptionPane.showMessageDialog(null, "Login realizado com sucesso.");
 
         if (usuario instanceof Aluno) {
             new MenuAluno((Aluno) usuario, projetoRepository, participacaoRepository, notificacaoRepository).exibirMenu();
@@ -56,12 +56,12 @@ public class MenuPrincipal {
         String nome = JOptionPane.showInputDialog("Nome:");
         String email = JOptionPane.showInputDialog("Email:");
         String senha = JOptionPane.showInputDialog("Senha:");
-        int matricula = Integer.parseInt(JOptionPane.showInputDialog("Matrícula"));
+        int matricula = Integer.parseInt(JOptionPane.showInputDialog("Matrícula:"));
 
         Aluno aluno = new Aluno(nome, email, senha, matricula);
         usuarioRepository.adicionarUsuario(aluno);
 
-        JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso!");
+        JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso.");
     }
 
     private void cadastrarProfessor() {
@@ -73,7 +73,7 @@ public class MenuPrincipal {
         Professor professor = new Professor(nome, email, senha, areaAtuacao);
         usuarioRepository.adicionarUsuario(professor);
 
-        JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso");
+        JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso.");
     }
 
     private void cadastrarCoordenador() {
@@ -85,7 +85,7 @@ public class MenuPrincipal {
         Coordenador coordenador = new Coordenador(nome, email, senha, curso);
         usuarioRepository.adicionarUsuario(coordenador);
 
-        JOptionPane.showMessageDialog(null, "Coordenador cadastrado com sucesso");
+        JOptionPane.showMessageDialog(null, "Coordenador cadastrado com sucesso.");
     }
 
     public void exibirMenu() {
@@ -125,7 +125,7 @@ public class MenuPrincipal {
 
                 default:
                     if (opcao != 0) {
-                        JOptionPane.showMessageDialog(null, "Opção inválida");
+                        JOptionPane.showMessageDialog(null, "Opção inválida.");
                     }
             }
         } while (opcao != 0);

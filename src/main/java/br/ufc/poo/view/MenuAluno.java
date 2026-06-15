@@ -55,16 +55,16 @@ public class MenuAluno {
             }
         }
         if (projetoEncontrado == null) {
-            throw new ProjetoInexistenteException("Projeto não encontrado");
+            throw new ProjetoInexistenteException("Projeto não encontrado.");
         }
 
         if (projetoEncontrado.getVagas() <= 0) {
-            throw new ProjetoSemVagasException("Projeto sem vagas disponíveis");
+            throw new ProjetoSemVagasException("Projeto sem vagas disponíveis.");
         }
         Participacao participacao = new Participacao(aluno, projetoEncontrado, StatusParticipacao.ATIVA);
         participacaoRepository.adicionarParticipacao(participacao);
         projetoEncontrado.setVagas(projetoEncontrado.getVagas() - 1);
-        JOptionPane.showMessageDialog(null, "Inscrição bem sucedida");
+        JOptionPane.showMessageDialog(null, "Inscrição feita com sucesso.");
     }
 
     public void historicoProjetos() throws AlunoSemParticipacoesException {
@@ -77,13 +77,13 @@ public class MenuAluno {
             }
         }
         if (mensagem.isEmpty()) {
-            throw new AlunoSemParticipacoesException("Você ainda não possui participações em projetos");
+            throw new AlunoSemParticipacoesException("Você ainda não possui participações em projetos.");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
 
     public void cancelarParticipacao() throws ParticipacaoJaCanceladaException {
-        String titulo = JOptionPane.showInputDialog("Digite o título do projeto");
+        String titulo = JOptionPane.showInputDialog("Digite o título do projeto:");
 
         for (Participacao p : participacaoRepository.listarParticipacoes()) {
             if (p.getAluno().equals(aluno) && p.getProjeto().getTitulo().equalsIgnoreCase(titulo)) {
@@ -92,12 +92,12 @@ public class MenuAluno {
                 } else {
                     p.setStatus(StatusParticipacao.CANCELADA);
                     p.getProjeto().setVagas(p.getProjeto().getVagas() + 1);
-                    JOptionPane.showMessageDialog(null, "Inscrição cancelada");
+                    JOptionPane.showMessageDialog(null, "Inscrição cancelada.");
                 }
                 return;
             }
         }
-        JOptionPane.showMessageDialog(null, "Você não está inscrito nesse projeto");
+        JOptionPane.showMessageDialog(null, "Você não está inscrito nesse projeto.");
     }
 
     public void notificacoes() throws AlunoSemNotificacoesException {
@@ -110,7 +110,7 @@ public class MenuAluno {
             }
         }
         if (mensagem.isEmpty()) {
-            throw new AlunoSemNotificacoesException("Você não possui notificações");
+            throw new AlunoSemNotificacoesException("Você não possui notificações.");
         }
         JOptionPane.showMessageDialog(null, mensagem);
     }
